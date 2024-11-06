@@ -62,31 +62,52 @@ const SearchResults = () => {
         <p className="text-red-500 text-lg">{error}</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
-            <div
-              key={product.id}
-              className="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105 cursor-pointer"
-              onClick={() => handleProductClick(product.id)}
-            >
-              <img
-                src={product.image}
-                alt={product.title}
-                className="w-full h-64 object-cover object-center transition-transform transform "
-              />
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-gray-800 hover:text-yellow-600 transition-colors mb-2">
-                  {product.title}
-                </h3>
-                <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                  {product.description}
+{products.map((product) => (
+          <div
+            key={product.id}
+            className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-2xl cursor-pointer"
+            onClick={() => handleProductClick(product.id)}
+          >
+            {/* Product Image */}
+            <img
+              src={product.image}
+              alt={product.title}
+              className="w-full h-64 object-cover object-center transition-transform transform"
+            />
+
+            {/* Product Details */}
+            <div className="p-6">
+              <h3 className="text-lg font-semibold text-gray-800 line-clamp-2 hover:text-yellow-600 transition-colors duration-300 mb-2">
+                {product.title}
+              </h3>
+
+              <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                {product.description}
+              </p>
+
+              <div className="flex justify-between items-center mb-4">
+                {/* Product Price */}
+                <p className="text-2xl font-bold text-gray-900">
+                  ${product.price.toFixed(2)}
                 </p>
-                <div className="flex justify-between items-center">
-                  <p className="text-xl font-semibold text-gray-900">${product.price}</p>
-                  <p className="text-gray-500 text-sm">Rating: {product.rating}</p>
+
+                {/* Product Rating */}
+                <div className="flex items-center">
+                  {[...Array(5)].map((_, index) => (
+                    <svg
+                      key={index}
+                      className={`w-4 h-4 fill-current ${index < Math.round(product.rating) ? "text-yellow-500" : "text-gray-300"}`}
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M12 .587l3.668 7.431 8.2 1.174-5.91 5.737 1.396 8.124L12 18.897l-7.354 3.856 1.396-8.124-5.91-5.737 8.2-1.174L12 .587z" />
+                    </svg>
+                  ))}
+                  <p className="ml-2 text-gray-500 text-sm">({product.rating})</p>
                 </div>
               </div>
             </div>
-          ))}
+          </div>
+        ))}
         </div>
       )}
     </div>
