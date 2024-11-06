@@ -1,4 +1,3 @@
-// src/contexts/AuthContext.jsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
@@ -6,21 +5,19 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    // Check if a token exists in local storage
+  useEffect(() => { 
     const token = localStorage.getItem('token');
-    setIsAuthenticated(!!token); // Set authenticated state based on token presence
+    setIsAuthenticated(!!token);  
   }, []);
-
-  // This is where you add the login function
+ 
   const login = (token) => {
-    localStorage.setItem('token', token); // Store the token in localStorage
-    setIsAuthenticated(true); // Update the authenticated state
+    localStorage.setItem('token', token);  
+    setIsAuthenticated(true);  
   };
 
   const logout = () => {
-    localStorage.removeItem('token'); // Remove the token from localStorage
-    setIsAuthenticated(false); // Update the authenticated state
+    localStorage.removeItem('token');  
+    setIsAuthenticated(false); 
   };
 
   return (

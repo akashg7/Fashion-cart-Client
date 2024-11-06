@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom'; 
 
 const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
-  const navigate = useNavigate(); // Use navigate for redirection
+  const navigate = useNavigate(); 
   const [clientSecret, setClientSecret] = useState('');
-  const [paymentStatus, setPaymentStatus] = useState(null); // State for payment status
+  const [paymentStatus, setPaymentStatus] = useState(null); 
 
   useEffect(() => {
     axios.post('https://fashion-cart-server.vercel.app/create-payment-intent', { amount: 1000, currency: 'usd' })
@@ -33,11 +33,11 @@ const CheckoutForm = () => {
 
     if (error) {
       console.error('Payment failed:', error);
-      setPaymentStatus('Payment failed! Please try again.'); // Update payment status
+      setPaymentStatus('Payment failed! Please try again.'); 
     } else if (paymentIntent.status === 'succeeded') {
       console.log('Payment succeeded!', paymentIntent);
-      setPaymentStatus('Payment succeeded! Thank you for your purchase.'); // Update payment status
-      navigate('/confirmation'); // Redirect to confirmation page
+      setPaymentStatus('Payment succeeded! Thank you for your purchase.'); 
+      navigate('/confirmation'); 
     }
   };
 
@@ -48,12 +48,12 @@ const CheckoutForm = () => {
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-2">Card Information</label>
-            <CardElement className="border border-gray-300 p-2 rounded focus:outline-none focus:ring focus:ring-blue-500" />
+            <CardElement className="border border-gray-300 p-2 rounded focus:outline-none focus:ring focus:ring-yellow-500" />
           </div>
           <button
             type="submit"
             disabled={!stripe}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded transition duration-200 hover:bg-blue-700 disabled:bg-gray-300"
+            className="w-full bg-yellow-600 text-white py-2 px-4 rounded transition duration-200 hover:bg-yellow-700 disabled:bg-gray-300"
           >
             Pay Now
           </button>

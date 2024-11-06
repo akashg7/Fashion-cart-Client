@@ -3,31 +3,34 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 const SearchResults = () => {
   const [products, setProducts] = useState([]);
-  const [error, setError] = useState(null); // State for error handling
+  const [error, setError] = useState(null); 
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSearchResults = async () => {
-      const query = new URLSearchParams(location.search).get('q'); // Get 'q' from query params
+      const query = new URLSearchParams(location.search).get('q'); 
 
       if (!query) {
-        // If there's no query, return early
         return setError('No search query provided.');
       }
 
       try {
+        setLoading(true); 
         const response = await fetch(`https://fashion-cart-server.vercel.app/search?q=${query}`);
 
         if (!response.ok) {
           throw new Error(`Error: ${response.status} - ${response.statusText}`);
         }
 
-        const data = await response.json(); // Parse the response as JSON
+        const data = await response.json(); 
         setProducts(data);
       } catch (error) {
         console.error('Failed to fetch search results:', error);
-        setError(error.message); // Set the error message to display it
+        setError(error.message); 
+      } finally {
+        setLoading(false); 
       }
     };
 
@@ -43,9 +46,17 @@ const SearchResults = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="w-16 h-16 border-4 border-t-4 border-gray-200 border-solid rounded-full animate-spin border-t-yellow-600"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
-      <h2 className="text-3xl font-semibold text-gray-900 mb-6">Search Results</h2>
+      <h2 className="text-3xl font-semibold text-gray-900 mb-6">Results</h2>
       
       {error ? (
         <p className="text-red-500 text-lg">{error}</p>
@@ -60,13 +71,12 @@ const SearchResults = () => {
               <img
                 src={product.image}
                 alt={product.title}
-                className="w-full h-64 object-cover object-center transition-transform transform hover:scale-110"
+                className="w-full h-64 object-cover object-center transition-transform transform "
               />
               <div className="p-4">
-                <h3 className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors mb-2">
+                <h3 className="text-lg font-semibold text-gray-800 hover:text-yellow-600 transition-colors mb-2">
                   {product.title}
                 </h3>
-                {/* Truncate description to 2 lines if it's too long */}
                 <p className="text-gray-600 text-sm mb-4 line-clamp-2">
                   {product.description}
                 </p>
