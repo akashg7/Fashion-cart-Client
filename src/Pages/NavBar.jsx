@@ -64,19 +64,28 @@ const NavBar = () => {
         </div>
 
             <div className="flex items-center space-x-6">
-            <Link
+
+
+           {isAuthenticated ? (<Link
   to="/cart" 
   className="text-white hover:text-gray-300 flex transition duration-200"
 > 
   <FaShoppingCart size={24} className="text-yellow-500 hover:text-yellow-700 transition" />
+</Link>) : (
+  <Link
+  to="/signin" 
+  className="text-white hover:text-gray-300 flex transition duration-200"
+> 
+  <FaShoppingCart size={24} className="text-yellow-500 hover:text-yellow-700 transition" />
 </Link>
+)}
 
         {/* add cart here */}
         {isAuthenticated ? (
             <button onClick={handleLogout} className="block  text-yellow-500 hover:text-yellow-700 transition duration-200">
               <FaSignOutAlt /> 
-            </button>
-          ) : (
+            </button> 
+          ) : ( 
             <Link to="/signin" className="block text-yellow-500 hover:text-yellow-700 transition duration-200">
               <FaSignInAlt /> 
             </Link>

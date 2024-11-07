@@ -10,6 +10,7 @@ const Home = () => {
   const getData = async () => {
     try {
       const response = await fetch("https://fashion-cart-server.vercel.app/products");
+      // const response = await fetch("https://localhost:3000");
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

@@ -4,6 +4,8 @@ import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import CheckoutForm from './CheckoutForm';
 
+
+
 const ProductPage = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -12,6 +14,7 @@ const ProductPage = () => {
   const [userId, setUserId] = useState(null);
   const [showCheckout, setShowCheckout] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false); 
+  const [cartLoading, setCartLoading] = useState(false); // State to track cart loading
 
   useEffect(() => {
     const getUserIdFromToken = () => {
@@ -59,8 +62,14 @@ const ProductPage = () => {
   if (error) return <div className="text-center py-10 text-red-500">{error}</div>;
 
   const handleAddToCart = async () => {
+    setCartLoading(true);
+    // const token = localStorage.getItem('token');
+    // if (!token) {
+    //   console.log("userId inside navigating")
+    //   navigate('/signin');
+    // } 
     const quantity = 1;
-
+    console.log(userId)
     if (userId) {
       try {
         const response = await axios.post(`https://fashion-cart-server.vercel.app/product/${id}/addtocart`, {
@@ -69,6 +78,7 @@ const ProductPage = () => {
         });
 
         if (response.status === 201) {
+          setCartLoading(false);
           alert('Product successfully added to cart!');
           console.log(response.data);
         }
@@ -76,7 +86,8 @@ const ProductPage = () => {
         console.error('Error adding product to cart:', error);
         alert('Failed to add product to cart.');
       }
-    } else {
+    }
+     else {
       alert('Please login to add items to your cart.');
     }
   };
@@ -142,7 +153,8 @@ const ProductPage = () => {
                     className="flex-1 py-3 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 shadow-lg transform hover:-translate-y-1 transition-all duration-300"
                     onClick={handleAddToCart}
                   >
-                    Add to Cart
+                {cartLoading ? 'Adding...' : 'Add to Cart'}
+
                   </button>
                   
                   
@@ -163,3 +175,7 @@ const ProductPage = () => {
 };
 
 export default ProductPage;
+
+
+
+// when the user is not signed in and clicks on cart the ui will be loading forever please correct the code and if the user is logged in show the cart and if the cart is empty then show the empty card as it was before and while showing the cart add loading ui
